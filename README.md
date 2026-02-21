@@ -1,6 +1,6 @@
 # Asteroids
 
-A simple asteroid game made usisng Python and Pygame.
+A simple asteroid game made using Python and Pygame.
 
 ## Dependencies
 
