@@ -21,10 +21,10 @@ class Player(CircleShape):
     def rotate(self, dt): # Changes the player rotation based on PLAYER_TURN_SPEED in constants
         self.rotation += PLAYER_TURN_SPEED * dt
     
-    def update(self, dt):
+    def update(self, dt): # Updates player movement with key press
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_a]:
+        if keys[pygame.K_a]: # If 'a' key pressed, rotate left
             self.rotate(dt * -1)
-        if keys[pygame.K_d]:
+        if keys[pygame.K_d]: # If 'd' key pressed, rotate right
             self.rotate(dt)

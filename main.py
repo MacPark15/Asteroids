@@ -19,7 +19,7 @@ def main():
             if event.type == pygame.QUIT: # If game is quit, end game loop
                 return
         screen.fill("black") # Fill screen black
-        player.update(delta_time)
+        player.update(delta_time) # Updates player movement
         player.draw(screen) # Draw the player on the screen
         pygame.display.flip() # Update display
         delta_time = (clock.tick(60)) / 1000 # Pause the game loop for 1/60th of a second. Runs game smoothly at 60FPS
