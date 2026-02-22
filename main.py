@@ -19,9 +19,10 @@ def main():
             if event.type == pygame.QUIT: # If game is quit, end game loop
                 return
         screen.fill("black") # Fill screen black
+        player.update(delta_time)
         player.draw(screen) # Draw the player on the screen
         pygame.display.flip() # Update display
-        dt = (clock.tick(60)) / 1000 # Pause the game loop for 1/60th of a second. Runs game smoothly at 60FPS
+        delta_time = (clock.tick(60)) / 1000 # Pause the game loop for 1/60th of a second. Runs game smoothly at 60FPS
 
 
 if __name__ == "__main__": # Calls main only if the file is run directly, not imported
