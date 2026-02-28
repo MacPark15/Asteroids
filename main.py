@@ -11,7 +11,7 @@ from shot import Shot
 def main():
     pygame.init() # Initialize pygame
     clock = pygame.time.Clock() # Create a pygame clock object
-    delta_time = 0 # Delta Time in seconds. Updates every tick
+    dt = 0 # Delta Time in seconds. Updates every tick
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) # Set pygame display to variables set in constant.py
     # GROUPS AND CONTAINERS
     updatable = pygame.sprite.Group() # Create updatable group
@@ -37,7 +37,7 @@ def main():
             if event.type == pygame.QUIT: # If game is quit, end game loop
                 return
         screen.fill("black") # Fill screen black
-        updatable.update(delta_time) # Updates player movement
+        updatable.update(dt) # Updates player movement
         for asteroid in asteroids: # For each asteroid in asteroids group...
             if asteroid.collides_with(player): # If asteroid collides with player...
                 log_event("player_hit") # Log 'player_hit'
@@ -51,7 +51,7 @@ def main():
         for each in drawable: # For each drawable object...
             each.draw(screen) # Draw it on the screen
         pygame.display.flip() # Update display
-        delta_time = (clock.tick(60)) / 1000 # Pause the game loop for 1/60th of a second. Runs game smoothly at 60FPS
+        dt = (clock.tick(60)) / 1000 # Pause the game loop for 1/60th of a second. Runs game smoothly at 60FPS
 
 
 if __name__ == "__main__": # If file is run directly, not imported...

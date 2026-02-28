@@ -10,6 +10,9 @@ class Player(CircleShape):
         self.y = y
         self.rotation = 0 # Sets Player rotation value
         self.shot_cooldown = 0 # Sets weapon cooldown
+        self.current_speed = 0
+        self.direction = ""
+        self.move_cooldown = 0
     
     def triangle(self): # Calculates triangle shape
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -26,13 +29,28 @@ class Player(CircleShape):
         self.rotation += PLAYER_TURN_SPEED * dt
 
     def move(self, dt): # Move player in direction of rotation
+        if self.current_speed < PLAYER_SPEED:
+            self.current_speed += PLAYER_ACCELERATION
         unit_vector = pygame.Vector2(0, 1)
         rotated_vector = unit_vector.rotate(self.rotation)
-        rotated_with_speed_vector = rotated_vector * PLAYER_SPEED * dt
+        rotated_with_speed_vector = rotated_vector * self.current_speed * dt
+        #rotated_with_speed_vector = rotated_vector * PLAYER_SPEED * dt
         self.position += rotated_with_speed_vector
     
+    def decelerate(self, dt):
+        if self.current_speed > 0:
+            self.current_speed -= PLAYER_DECELERATION
+        unit_vector = pygame.Vector2(0, 1)
+        rotated_vector = unit_vector.rotate(self.rotation)
+        rotated_with_speed_vector = rotated_vector * self.current_speed * dt
+        if self.direction == "forward":
+            self.position += rotated_with_speed_vector
+        else:
+            self.position -= rotated_with_speed_vector
+
     def update(self, dt): # Updates player movement with key press
         self.shot_cooldown -= dt
+        self.move_cooldown -= dt
         # KEYPRESSES
         keys = pygame.key.get_pressed()
         # MOVEMENT
@@ -42,8 +60,12 @@ class Player(CircleShape):
             self.rotate(dt)
         if keys[pygame.K_w] or keys[pygame.K_UP]: # If 'w' key pressed, move forward
             self.move(dt) 
-        if keys[pygame.K_s] or keys[pygame.K_DOWN]: # If 's' key pressed, move backwards
+            self.direction = "forward"
+        elif keys[pygame.K_s] or keys[pygame.K_DOWN]: # If 's' key pressed, move backwards
             self.move(dt * -1)
+            self.direction = "backward"
+        else:
+            self.decelerate(dt)
         # SHOOTING
         if keys[pygame.K_SPACE]:
             self.shoot()
