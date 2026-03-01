@@ -7,12 +7,14 @@ from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
+from score import Score
 
 def main():
     pygame.init() # Initialize pygame
     clock = pygame.time.Clock() # Create a pygame clock object
     dt = 0 # Delta Time in seconds. Updates every tick
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) # Set pygame display to variables set in constant.py
+    score = Score()
     # GROUPS AND CONTAINERS
     updatable = pygame.sprite.Group() # Create updatable group
     drawable = pygame.sprite.Group() # Create drawable group
@@ -37,15 +39,18 @@ def main():
             if event.type == pygame.QUIT: # If game is quit, end game loop
                 return
         screen.fill("black") # Fill screen black
+        score.draw(screen)
         updatable.update(dt) # Updates player movement
         for asteroid in asteroids: # For each asteroid in asteroids group...
             if asteroid.collides_with(player): # If asteroid collides with player...
                 log_event("player_hit") # Log 'player_hit'
                 print("Game over!") # Print 'Game Over'
+                print(f"Score: {score.score}")
                 sys.exit() # Exit program
             for shot in shots:    
                 if asteroid.collides_with(shot):
                     log_event("asteroid_shot")
+                    score.add(10)
                     asteroid.split()
                     pygame.sprite.Sprite.kill(shot)
         for each in drawable: # For each drawable object...
